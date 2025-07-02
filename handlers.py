@@ -1,4 +1,4 @@
-from aiogram import types, Router
+from aiogram import types, Router, Bot
 from aiogram.filters import Command
 from config import ADMIN_IDS, CHANNEL_ID
 from database import add_movie, get_message_id
@@ -22,13 +22,13 @@ async def add_movie_handler(msg: types.Message):
         await msg.answer("❌ Format: /add <kod> <message_id>")
 
 @router.message()
-async def movie_code_handler(msg: types.Message):
+async def movie_code_handler(msg: types.Message, bot: Bot):
     code = msg.text.strip()
     message_id = get_message_id(code)
 
     if message_id:
         try:
-            await msg.bot.copy_message(
+            await bot.copy_message(
                 chat_id=msg.chat.id,
                 from_chat_id=CHANNEL_ID,
                 message_id=message_id
